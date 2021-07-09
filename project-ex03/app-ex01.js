@@ -5,7 +5,7 @@
 
 
 const dzMath = require("douzone-busannpm-math");
-var console: Console
+
 
 console.log(dzMath.sum(1,2,3,4));
 console.log(dzMath.max(-10,-20,-30,-40));
