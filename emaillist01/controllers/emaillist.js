@@ -4,13 +4,16 @@ module.exports = {
 
     index: async function(req,res){
         const result = await model.findAll();
-        res.render('index');
+        res.render('index', {
+            list: result || []
+        });
     },
     form: function(req,res){
         res.render('form');
     },
-    add: function(req, res){
-        console.log(req.body);
+    add: async function(req, res){
+        const result = await model.insert(req.body);
+        console.log(result);
 
         res.redirect("/");
     }

@@ -1,28 +1,38 @@
+  
 const mysql = require('mysql');
+const util = require('util');
+
 const dbconn = require('./dbconn');
 
 module.exports = {
-    findAll : async function() {
+    findAll: async function() {
         const conn = dbconn();
-        const query = function(sql, data){
-            return new Promise(function(resolve, reject){
-                conn.query(
-                    sql,
-                    data,
-                    function(error, rows, field) {
-                    });                
-            });
-        }
+        // const query = (sql, data) => new Promise((resolve, reject) => conn.query(sql, data, (error, rows, field) => error ? reject(error):resolve(rows))); 
+        const query = util.promisify(conn.query).bind(conn);
 
-        try {         
+        try {
             const results = await query("select first_name, last_name, email from emaillist order by no desc", []);
-            return results;  
-        } catch (error) {
-            console.error(e)
-        }{
-            conn.end();      
-        }  
+            return results;    
+        } catch(e) {
+            console.error(e);
+        } finally {
+            conn.end();
+        }
     },
-    insert : function(){
+    insert: async function(emaillist) {
+        console.log(emaillist);
+        const conn = dbconn();
+        const query = util.promisify(conn.query).bind(conn);
+
+        try {
+            const results = await query(
+                "insert into emaillist values(null, ?, ?, ?)",
+                [ emaillist.fn, emaillist.ln, emaillist.email]);
+            return results;    
+        } catch(e) {
+            console.error(e);
+        } finally {
+            conn.end();
+        }
     }
 }
