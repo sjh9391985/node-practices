@@ -2,10 +2,7 @@ const express = require('express'); //require는 동기방식이기 때문에 �
 const http = require('http');
 const path = require('path');
 
-
-const mainRouter = require('./routes/main');
-const helloRouter = require('./routes/hello');
-const userRouter = require('./routes/user');
+const emaillistRouter = require('./routes/emaillist');
 const port = 8080;
 
 // Application Setup
@@ -27,9 +24,8 @@ const application = express()
         res.locals.res = res;
         next();
     })
-    .use('/', mainRouter)
-    .use('/hello', helloRouter)
-    .use('/user', userRouter);
+    .use('/', emaillistRouter)
+
     
 
 
