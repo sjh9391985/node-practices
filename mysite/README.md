@@ -2,15 +2,15 @@
 
 ## 설치 패키지
 $ npm init -y
-$ npm i express
+$ npm i express<br>
 $ npm i ejs
-$ npm i dotenv
+$ npm i dotenv<br>
 $ npm i sequelize
-$ npm i mysql2
+$ npm i mysql2<br>
 $ npm i -D nodemon
 
 ## script in package.json setting
-''' JSON
+''' JSON '''
 
 ''' 
     "scripts": 
@@ -27,7 +27,7 @@ $ npm i -D nodemon
     |---- package-lock.json
     |---- /node-modules
     |---- /config
-    |---- /public
+    |---- /public/assets(css,js,image)
     |---- /routes
     |---- /controllers
     |---- /models
@@ -38,4 +38,5 @@ $ npm i -D nodemon
             |---- /board
             |---- /gallery
             |---- /admin
+            |---- /error
 </pre>
