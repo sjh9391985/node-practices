@@ -4,6 +4,9 @@
 $ npm init -y
 $ npm i express
 $ npm i ejs
+$ npm i dotenv
+$ npm i sequelize
+$ npm i mysql2
 $ npm i -D nodemon
 
 ## script in package.json setting
