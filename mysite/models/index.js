@@ -1,10 +1,12 @@
 const {Sequelize, DataTypes, ENUM} = require('sequelize');
 
 const sequelize = new Sequelize(
-    'webdb','webdb','webdb',
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
     {
-        host: '192.168.80.114',
-        port: 3307,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
         dialect: 'mysql'
     }
 );
@@ -12,8 +14,8 @@ const sequelize = new Sequelize(
 const User = require('./User')(sequelize);
 
 User.sync({
-    force: false,
-    alter: true // debug 할땐 true, 개발이 완료 되었을땐 false로 작업을 해주면 된다.
+    force: process.env.TABLE_CREATE_ALWAYS === 'true', // DB를 항상 새롭게 만든다.
+    alter: process.env.TABLE_ALTER_SYNC === "true" // debug 할땐 true, 개발이 완료 되었을땐 false로 작업을 해주면 된다.
 });
 
 module.exports = { User }

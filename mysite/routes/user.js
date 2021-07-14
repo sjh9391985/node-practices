@@ -11,4 +11,9 @@ Router.route('/join').post(controller.join);
 
 Router.route('/joinsuccess').get(controller.joinsuccess);
 
+Router.route('/login').get(controller.loginform);
+
+Router.route('/login').post(controller.login);
+
+
 module.exports = Router;
