@@ -12,10 +12,17 @@ const sequelize = new Sequelize(
 );
 
 const User = require('./User')(sequelize);
+const Guestbook = require('./Guestbook')(sequelize);
 
 User.sync({
     force: process.env.TABLE_CREATE_ALWAYS === 'true', // DB를 항상 새롭게 만든다.
     alter: process.env.TABLE_ALTER_SYNC === "true" // debug 할땐 true, 개발이 완료 되었을땐 false로 작업을 해주면 된다.
 });
 
-module.exports = { User }
+
+Guestbook.sync({
+    force: process.env.TABLE_CREATE_ALWAYS === 'true', // DB를 항상 새롭게 만든다.
+    alter: process.env.TABLE_ALTER_SYNC === "true" // debug 할땐 true, 개발이 완료 되었을땐 false로 작업을 해주면 된다.
+});
+
+module.exports = { User, Guestbook }

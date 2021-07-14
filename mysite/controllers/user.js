@@ -2,11 +2,11 @@ const models = require('../models'); //이렇게 설정하면 models 의 디렉�
 
 module.exports = {
 
-    joinform: function(req, res){
+    join: function(req, res){
         res.render('user/joinform');
     },
 
-    join: async function(req, res){
+    _join: async function(req, res){
         const result = await models.User.create(
             {  
             name: req.body.name,
@@ -23,11 +23,11 @@ module.exports = {
         res.render('user/joinsuccess');
     },
 
-    loginform: function(req, res){
+    login: function(req, res){
         res.render('user/loginform');
     },
 
-    login: async function(req, res){
+    _login: async function(req, res){
         const user = await models.User.findOne(
             {
                 attributes: ['no', 'name', 'role'],
@@ -37,14 +37,27 @@ module.exports = {
                 }
             }
         )
-        if(user == null) {
-            res.render('user/loginform',{
-                email: req.body.email,
-                result: 'fail'
-            })
+        if(user == null) {               // 여러 객체를 나열해야할때.
+            res.render('user/loginform', Object.assign(req.body, {
+                result: 'fail',
+                password: ''
+            }));
+            return ;
         }
 
+        // LOGIN 처리
+        req.session.authUser = user;
         console.log(user);
+        res.redirect('/')
+    },
+
+    logout: async function(req,res){
+        await req.session.destroy();
+        res.redirect('/')
+    },
+
+    update: function(req, res){
+        //req.session.authUser.no
         res.redirect('/')
     }
 }

@@ -3,6 +3,7 @@
 ## 설치 패키지
 $ npm init -y<br>
 $ npm i express<br>
+$ npm i express-session<br>
 $ npm i ejs<br>
 $ npm i dotenv<br>
 $ npm i sequelize<br>

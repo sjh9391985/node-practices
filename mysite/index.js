@@ -1,7 +1,9 @@
 const express = require('express'); //require는 동기방식이기 때문에 코드의 중간에 하면 서버가 돌때 문제가 생길수 있다.(맨앞에 하는것을 권장)
+const session = require('express-session');
 const http = require('http');
 const path = require('path');
 const dotenv = require('dotenv');
+
 
 // Environment Variable(환경변수)
 dotenv.config({ path: path.join(__dirname, 'config/app.env') })
@@ -9,6 +11,7 @@ dotenv.config({ path: path.join(__dirname, 'config/db.env') })
 
 const mainRouter = require('./routes/main');
 const userRouter = require('./routes/user');
+const guestbookRouter = require('./routes/guestbook');
 
 
 // Application Setup
@@ -16,15 +19,22 @@ const application = express()
     // 1. static serve(체인걸음)
     .use(express.static(path.join(__dirname, process.env.STATIC_RESOURCES_DIRECTORY)))
 
-    // 2. request body parser
+    // 2. session enviroment
+    .use(session({
+        secret: 'mysite-session', // 쿠키 변조를 방지하기 위한 값.
+        resave: false,  // req.session.authUser= user (요청처리에서 세션이 변경 사항이 없어도 항상 저장)
+        saveUninitialized: false    // 새로 세션을 생성할 때 "uninitialized" 상태로 둔다. 따라서 로그인 세션처리에서는 false로 해주면 좋다.
+    }))
+
+    // 3. request body parser
     .use(express.urlencoded({extended: true})) //application/x-www-form-urlencoded
     .use(express.json())    //application/json
 
-    // 3. view engine setup
+    // 4. view engine setup
     .set("views", path.join(__dirname, "views"))
     .set('view engine', 'ejs')
 
-    // 4. request router
+    // 5. request router
     .all('*', function(req,res, next){ // 모든 메소드의 url 설정
         res.locals.req = req;
         res.locals.res = res;
@@ -32,6 +42,7 @@ const application = express()
     })
     .use('/', mainRouter) // < - 이부분에서 계속 추가
     .use('/user', userRouter) 
+    .use('/guestbook', guestbookRouter) 
     .use((req, res) => { // url이 해당되지 않는것들은 404 Error page 처리
         res.render('error/404');
     })
