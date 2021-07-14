@@ -1,13 +1,13 @@
 # Mysite on Node(Express)
 
 ## 설치 패키지
-$ npm init -y
+$ npm init -y<br>
 $ npm i express<br>
-$ npm i ejs
+$ npm i ejs<br>
 $ npm i dotenv<br>
-$ npm i sequelize
+$ npm i sequelize<br>
 $ npm i mysql2<br>
-$ npm i -D nodemon
+$ npm i -D nodemon<br>
 
 ## script in package.json setting
 ''' JSON '''
