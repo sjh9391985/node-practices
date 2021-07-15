@@ -12,7 +12,8 @@ dotenv.config({ path: path.join(__dirname, 'config/db.env') })
 const mainRouter = require('./routes/main');
 const userRouter = require('./routes/user');
 const guestbookRouter = require('./routes/guestbook');
-
+const errorRoute = require('./routes/error');
+const userApiRouter = require('./routes/user-api');
 // Logging
 const logger = require('./logging');
 
@@ -32,7 +33,7 @@ const application = express()
 
     // 3. request body parser
     .use(express.urlencoded({extended: true})) //application/x-www-form-urlencoded
-    .use(express.json())    //application/json
+    .use(express.json())                       //application/json
 
     // 4. view engine setup
     .set("views", path.join(__dirname, "views"))
@@ -46,12 +47,12 @@ const application = express()
     })
     .use('/', mainRouter) // < - 이부분에서 계속 추가
     .use('/user', userRouter) 
-    .use('/guestbook', guestbookRouter) 
-    .use((req, res) => { // url이 해당되지 않는것들은 404 Error page 처리
-        res.render('error/404');
-    })
+    .use('/api/user', userApiRouter) 
     
-
+    .use('/guestbook', guestbookRouter)
+ 
+    .use(errorRoute.error404) //404 에러처리
+    .use(errorRoute.error500) //500 처리
 
 // server setup
 http.createServer(application)

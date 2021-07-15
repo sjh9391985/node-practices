@@ -6,7 +6,8 @@ module.exports = {
         res.render('user/joinform');
     },
 
-    _join: async function(req, res){
+    _join: async function(req, res, next){
+        try{
         const result = await models.User.create(
             {  
             name: req.body.name,
@@ -17,17 +18,25 @@ module.exports = {
         );
         console.log(result);
         res.redirect('/user/joinsuccess')
+        }catch(err){
+            next(err);
+        }
     },
 
     joinsuccess: function(req, res){
         res.render('user/joinsuccess');
     },
 
-    login: function(req, res){
+    login: function(req, res, next){
+        try{
         res.render('user/loginform');
+        }catch(e){
+            next(e);
+        }    
     },
 
-    _login: async function(req, res){
+    _login: async function(req, res, next){
+        try{
         const user = await models.User.findOne(
             {
                 attributes: ['no', 'name', 'role'],
@@ -49,21 +58,44 @@ module.exports = {
         req.session.authUser = user;
         console.log(user);
         res.redirect('/')
+        } catch(e){
+            next(e)
+        }
     },
 
-    logout: async function(req,res){
+    logout: async function(req,res, next){
+        try{
         await req.session.destroy();
         res.redirect('/')
+        }catch(e){
+            next(e)
+        }
     },
-
-    update: function(req, res){
-        //req.session.authUser.no
-        res.redirect('/')
+    update: async function(req, res, next) {
+        try {
+            const user = await models.User.findOne({
+                attributes: ['no', 'email', 'name', 'gender'],
+                where: {
+                    no: req.session.authUser.no
+                }
+            });
+            res.render("user/update", { user });
+        } catch(e) {
+            next(e);
+        }
     },
-
-    _update: function(req, res){
-        //req.session.authUser.no
-        res.redirect('/')
+    _update: async function(req, res, next) {
+        try {
+            const {[req.body.password == '' ? 'password' : '']: remove, ...updateObject} = req.body;
+            await models.User.update(updateObject, {
+                where: {
+                    no: req.session.authUser.no    
+                }
+            });
+            res.redirect("/user/update");
+        } catch(err) {
+            next(err);
+        }    
     }
 
 

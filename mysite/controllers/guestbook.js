@@ -2,7 +2,8 @@ const models = require('../models'); //이렇게 설정하면 models 의 디렉�
 const moment = require('moment')
 
 module.exports = {
-    index: async function(req,res){
+    index: async function(req,res, next){
+        try { 
         const result = await models.Guestbook.findAll({
             attributes: ['no', 'name', 'password', 'message', 'regDate'],
             order: [
@@ -13,10 +14,15 @@ module.exports = {
             list: result,
             moment : moment
         })
-       
+        }catch(e){
+            next(e);
+        }
     },
 
-    _add: async function(req,res){
+    _add: async function(req,res,next){
+        try{
+
+        
         const result = await models.Guestbook.create(
             {   
                 name: req.body.name,
@@ -26,6 +32,9 @@ module.exports = {
         )
         console.log(result);
         res.redirect("/guestbook");
+        }catch(e){
+            next(e);
+        }
     },
 
   
@@ -36,7 +45,8 @@ module.exports = {
         });
     },
 
-    _delete: async function(req, res){
+    _delete: async function(req, res, next){
+        try{
         const result = await models.Guestbook.destroy({
             where:{
             no: req.body.no,
@@ -47,5 +57,8 @@ module.exports = {
         //const result = await model.delete(req.body);
         //console.log(req.body);
         res.redirect("/guestbook");
+        }catch(e){
+            next(e)
+        }
     }
 }
