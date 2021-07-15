@@ -31,4 +31,6 @@ Router.route('/logout').get(controller.logout);
 // 회원정보 수정
 Router.route('/update').get(auth, controller.update);
 
+Router.route('/update').post(auth, controller._update);
+
 module.exports = Router;

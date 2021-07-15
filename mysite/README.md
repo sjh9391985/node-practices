@@ -8,6 +8,9 @@ $ npm i ejs<br>
 $ npm i dotenv<br>
 $ npm i sequelize<br>
 $ npm i mysql2<br>
+$ npm i moment<br>
+$ npm i winston<br>
+$ npm i winston-daily-rotate-file<br>
 $ npm i -D nodemon<br>
 
 ## script in package.json setting
@@ -31,6 +34,8 @@ $ npm i -D nodemon<br>
     |---- /public/assets(css,js,image)
     |---- /routes
     |---- /controllers
+    |---- /logging
+    |---- /logs
     |---- /models
     |---- /views
             |---- /main

@@ -1,5 +1,5 @@
 const models = require('../models'); //이렇게 설정하면 models 의 디렉토리의 index.js만 실행이 된다.
-
+const moment = require('moment')
 
 module.exports = {
     index: async function(req,res){
@@ -9,7 +9,10 @@ module.exports = {
                 ['no', 'DESC']
             ]
         })
-        res.render('guestbook/list', {list: result})
+        res.render('guestbook/list', {
+            list: result,
+            moment : moment
+        })
        
     },
 

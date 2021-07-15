@@ -59,5 +59,12 @@ module.exports = {
     update: function(req, res){
         //req.session.authUser.no
         res.redirect('/')
+    },
+
+    _update: function(req, res){
+        //req.session.authUser.no
+        res.redirect('/')
     }
+
+
 }

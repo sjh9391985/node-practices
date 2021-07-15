@@ -13,6 +13,10 @@ const mainRouter = require('./routes/main');
 const userRouter = require('./routes/user');
 const guestbookRouter = require('./routes/guestbook');
 
+// Logging
+const logger = require('./logging');
+
+
 
 // Application Setup
 const application = express()
@@ -52,7 +56,7 @@ const application = express()
 // server setup
 http.createServer(application)
     .on('listening', function(){
-        console.info(`Http Server running on port ${process.env.PORT}`);
+        logger.info(`Http Server running on port ${process.env.PORT}`);
     })
     .on('error', function(error){
         if(error.syscall != 'listen'){
@@ -60,11 +64,11 @@ http.createServer(application)
         }
         switch(error.code){
             case 'EACCESS':
-                console.error(`Port: ${process.env.PORT} requires privileges`); //port를 열지 못햇을때
+                logger.error(`Port: ${process.env.PORT} requires privileges`); //port를 열지 못햇을때
                 process.exit(1); // 1번은 비정상종료
                 break;
             case 'EADDRINUSE' :
-                console.error(`Port: ${process.env.PORT} is already in use`); //port를 이미 사용하고 있을때
+                logger.error(`Port: ${process.env.PORT} is already in use`); //port를 이미 사용하고 있을때
                 process.exit(1); 
                 break;
             default:

@@ -32,11 +32,13 @@
 							<tr>
 								<td><%= ls.no%></td>
 								<td><%= ls.name%></td>
-								<td><%= ls.password%></td>
+								<td><%= moment(ls.regDate).format('YYYY-MM-DD hh:mm:ss') %></td>
 								<td><a href="/guestbook/delete/<%= ls.no %>">삭제</a></td>
 							</tr>
 							<tr>
-								<td colspan=4><%= ls.message%></td>
+								<td colspan=4>
+									<%- ls.message.replace(/\n/g, '<br/>')%>
+								</td>
 							</tr>
 						</table>
 						<br>
