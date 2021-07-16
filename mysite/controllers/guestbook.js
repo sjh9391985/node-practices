@@ -2,6 +2,7 @@ const models = require('../models'); //이렇게 설정하면 models 의 디렉�
 const moment = require('moment')
 
 module.exports = {
+    /* 방명록 화면 */
     index: async function(req,res, next){
         try { 
         const result = await models.Guestbook.findAll({
@@ -18,11 +19,11 @@ module.exports = {
             next(e);
         }
     },
+    /* 방명록 화면 END */
 
+    /* 방명록 글 추가 */
     _add: async function(req,res,next){
         try{
-
-        
         const result = await models.Guestbook.create(
             {   
                 name: req.body.name,
@@ -36,8 +37,9 @@ module.exports = {
             next(e);
         }
     },
-
+    /* 방명록 글 추가 END */    
   
+    /* 방명록 글 삭제 */
     deleteform: function(req, res){
         console.log("deleteform!!");
         res.render('guestbook/deleteform', {
@@ -59,6 +61,24 @@ module.exports = {
         res.redirect("/guestbook");
         }catch(e){
             next(e)
+        }
+    },
+    /* 방명록 글 삭제 END */
+
+    spa: async function(req,res, next){
+        try { 
+        const result = await models.Guestbook.findAll({
+            attributes: ['no', 'name', 'password', 'message', 'regDate'],
+            order: [
+                ['no', 'DESC']
+            ]
+        })
+        res.render('guestbook/spa-landing', {
+            list: result,
+            moment : moment
+        })
+        }catch(e){
+            next(e);
         }
     }
 }

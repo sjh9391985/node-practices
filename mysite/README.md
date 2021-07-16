@@ -8,6 +8,7 @@ $ npm i ejs<br>
 $ npm i dotenv<br>
 $ npm i sequelize<br>
 $ npm i mysql2<br>
+$ npm i multer<br>
 $ npm i moment<br>
 $ npm i winston<br>
 $ npm i winston-daily-rotate-file<br>
@@ -31,11 +32,17 @@ $ npm i -D nodemon<br>
     |---- package-lock.json
     |---- /node-modules
     |---- /config
-    |---- /public/assets(css,js,image)
+    |---- /public
+              |--- /assets
+                       |--- /css
+                       |--- /js
+                       |--- /image
+                       |--- /gallery
     |---- /routes
     |---- /controllers
     |---- /logging
     |---- /logs
+    |---- /multer-temporary-store
     |---- /models
     |---- /views
             |---- /main

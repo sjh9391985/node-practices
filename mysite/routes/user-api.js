@@ -14,4 +14,14 @@ Router.route('/needauth').get(auth, function(res, req){
     })
 });
 
+Router.route('/error').get(function(res, req, next){
+
+    try{
+        throw new Error('Broken');
+    }catch(e){
+        next(e)
+    }
+    
+});
+
 module.exports = Router;

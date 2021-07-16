@@ -1,7 +1,7 @@
 const models = require('../models'); //이렇게 설정하면 models 의 디렉토리의 index.js만 실행이 된다.
 
 module.exports = {
-
+    /* 회원가입 */
     join: function(req, res){
         res.render('user/joinform');
     },
@@ -26,7 +26,9 @@ module.exports = {
     joinsuccess: function(req, res){
         res.render('user/joinsuccess');
     },
+    /* 회원가입 END */
 
+    /* 로그인 */
     login: function(req, res, next){
         try{
         res.render('user/loginform');
@@ -44,14 +46,14 @@ module.exports = {
                     email: req.body.email,
                     password: req.body.password
                 }
-            }
-        )
-        if(user == null) {               // 여러 객체를 나열해야할때.
-            res.render('user/loginform', Object.assign(req.body, {
-                result: 'fail',
-                password: ''
-            }));
-            return ;
+            });
+
+            if(user == null) {               // 여러 객체를 나열해야할때.
+                res.render('user/loginform', Object.assign(req.body, {
+                    result: 'fail',
+                    password: ''
+                }));
+                return ;
         }
 
         // LOGIN 처리
@@ -62,8 +64,10 @@ module.exports = {
             next(e)
         }
     },
+    /* 로그인 END */
 
-    logout: async function(req,res, next){
+    /* 로그아웃 */
+    logout: async function(req, res, next){
         try{
         await req.session.destroy();
         res.redirect('/')
@@ -71,6 +75,9 @@ module.exports = {
             next(e)
         }
     },
+    /* 로그아웃 END */
+
+    /* 회원정보 수정 */
     update: async function(req, res, next) {
         try {
             const user = await models.User.findOne({
@@ -97,6 +104,7 @@ module.exports = {
             next(err);
         }    
     }
+    /* 회원정보 수정 END */
 
 
 }

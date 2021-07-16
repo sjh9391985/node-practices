@@ -3,7 +3,7 @@ const session = require('express-session');
 const http = require('http');
 const path = require('path');
 const dotenv = require('dotenv');
-
+const multer = require('multer');
 
 // Environment Variable(환경변수)
 dotenv.config({ path: path.join(__dirname, 'config/app.env') })
@@ -13,33 +13,44 @@ const mainRouter = require('./routes/main');
 const userRouter = require('./routes/user');
 const guestbookRouter = require('./routes/guestbook');
 const errorRoute = require('./routes/error');
+const galleryRouter = require('./routes/gallery')
+const boardRouter = require('./routes/board')
+
+// api-router
 const userApiRouter = require('./routes/user-api');
+const guestbookApiRouter = require('./routes/guestbook-api');
+
 // Logging
 const logger = require('./logging');
 
 
-
 // Application Setup
 const application = express()
-    // 1. static serve(체인걸음)
-    .use(express.static(path.join(__dirname, process.env.STATIC_RESOURCES_DIRECTORY)))
-
-    // 2. session enviroment
+    // 1. session enviroment
     .use(session({
         secret: 'mysite-session', // 쿠키 변조를 방지하기 위한 값.
         resave: false,  // req.session.authUser= user (요청처리에서 세션이 변경 사항이 없어도 항상 저장)
         saveUninitialized: false    // 새로 세션을 생성할 때 "uninitialized" 상태로 둔다. 따라서 로그인 세션처리에서는 false로 해주면 좋다.
     }))
 
-    // 3. request body parser
+    // 2. request body parser
     .use(express.urlencoded({extended: true})) //application/x-www-form-urlencoded
     .use(express.json())                       //application/json
 
-    // 4. view engine setup
+    // 3. multipart
+    .use(multer({
+        dest: path.join(__dirname, process.env.MULTER_TEMPORARY_STORE)
+
+    }).single('file'))
+
+    // 4. static serve(체인걸음)
+    .use(express.static(path.join(__dirname, process.env.STATIC_RESOURCES_DIRECTORY)))
+    
+    // 5. view engine setup
     .set("views", path.join(__dirname, "views"))
     .set('view engine', 'ejs')
 
-    // 5. request router
+    // 6. request router
     .all('*', function(req,res, next){ // 모든 메소드의 url 설정
         res.locals.req = req;
         res.locals.res = res;
@@ -50,7 +61,12 @@ const application = express()
     .use('/api/user', userApiRouter) 
     
     .use('/guestbook', guestbookRouter)
- 
+    .use('/api/guestbook', guestbookApiRouter)
+
+    .use('/gallery', galleryRouter)
+
+    .use('/board' , boardRouter)
+
     .use(errorRoute.error404) //404 에러처리
     .use(errorRoute.error500) //500 처리
 
