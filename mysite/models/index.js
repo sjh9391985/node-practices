@@ -24,4 +24,9 @@ Gallery.sync({
     alter: process.env.TABLE_ALTER_SYNC === 'true'
 });
 
-module.exports = { User, Guestbook, Gallery }
+Site.sync({
+    force: process.env.TABLE_CREATE_ALWAYS === 'true',
+    alter: process.env.TABLE_ALTER_SYNC === 'true'
+});
+
+module.exports = { User, Guestbook, Gallery, Site }

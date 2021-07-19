@@ -1,4 +1,4 @@
-const {Sequelize, DataTypes, ENUM} = require('sequelize');
+const {Sequelize, DataTypes} = require('sequelize');
 
 module.exports = function(sequelize){
     return sequelize.define('Guestbook', {
