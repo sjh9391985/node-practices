@@ -1,6 +1,6 @@
 // express import
 const express = require('express');
-const auth = require('./auth')
+const authorized = require('./authorized')
 const controller = require('../controllers/user');
 
 const Router = express.Router();
@@ -24,7 +24,7 @@ Router.route('/login').post(controller._login);
 Router.route('/logout').get(controller.logout);
 
 // 회원정보 수정
-Router.route('/update').get(auth(), controller.update);
-Router.route('/update').post(auth(), controller._update);
+Router.route('/update').get(authorized(), controller.update);
+Router.route('/update').post(authorized(), controller._update);
 
 module.exports = Router;
