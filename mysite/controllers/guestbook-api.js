@@ -1,9 +1,8 @@
-const models = require('../models'); //이렇게 설정하면 models 의 디렉토리의 index.js만 실행이 된다.
+const models = require('../models');
 const { Op } = require("sequelize");
 
 module.exports = {
-
-    create: async (req, res, next) => {
+    create: async function(req, res, next) {
         try {   
             const result = await models.Guestbook.create(req.body);
             res.send({
@@ -15,8 +14,7 @@ module.exports = {
             next(err);
         }
     },
-
-    read: async (req, res, next) => {
+    read: async function(req, res, next) {
         try {
             const startNo = req.query.sno || 0;
             const results = await models.Guestbook.findAll({
@@ -37,8 +35,7 @@ module.exports = {
           next(err);
         }       
     },
-
-    delete: async (req, res, next) => {
+    delete: async function(req, res, next) {
         try {
             const result = await models.Guestbook.destroy({
                 where: {
@@ -53,5 +50,5 @@ module.exports = {
         } catch(err){
             next(err);
         }
-    }
+    }  
 }

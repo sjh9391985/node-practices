@@ -1,27 +1,23 @@
-// express import
 const express = require('express');
 const authorized = require('./authorized');
 const controller = require('../controllers/user-api');
 
-const Router = express.Router();
+const router = express.Router();
+router.route('/checkemail').get(controller.checkemail);
 
-// email 중복확인
-Router.route('/checkemail').get(controller.checkemail);
-
-Router.route('/needauth').get(authorized, function(res, req){
+router.route('/needauth').get(authorized, function(req, res){
     res.send({
-        result : "success"
-    })
+        result: "success"
+    });
 });
 
-Router.route('/error').get(function(res, req, next){
-
+router.route('/error').get(function(req, res, next){
     try{
-        throw new Error('Broken');
-    }catch(e){
-        next(e)
+        throw new Error('BROKEN');
+    } catch(err) {
+        next(err);
     }
-    
 });
 
-module.exports = Router;
+
+module.exports = router;

@@ -10,6 +10,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 const User = require('./User')(sequelize);
 const Guestbook = require('./Guestbook')(sequelize);
 const Gallery = require('./Gallery')(sequelize);
+const Site = require('./Site')(sequelize);
 
 User.sync({
     force: process.env.TABLE_CREATE_ALWAYS === 'true',

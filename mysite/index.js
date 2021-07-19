@@ -1,81 +1,47 @@
 (function(){
-const express = require('express'); //require는 동기방식이기 때문에 코드의 중간에 하면 서버가 돌때 문제가 생길수 있다.(맨앞에 하는것을 권장)
-const session = require('express-session');
-const http = require('http');
-const path = require('path');
-const dotenv = require('dotenv');
-const multer = require('multer');
+    const express = require('express');
+    const session = require('express-session');
+    const multer = require('multer');
+    const http = require('http');
+    const path = require('path');
+    const dotenv = require('dotenv');
 
-// 1. Environment Variable(환경변수)
-dotenv.config({ path: path.join(__dirname, 'config/app.env') })
-dotenv.config({ path: path.join(__dirname, 'config/db.env') })
+    // 1. Environment Variables
+    dotenv.config({path: path.join(__dirname, 'config/app.env')})
+    dotenv.config({path: path.join(__dirname, 'config/db.env')})
 
-// 2. Application Routers
-const { applicationRouter } = require('./routes');
-// const mainRouter = require('./routes/main');
-// const userRouter = require('./routes/user');
-// const guestbookRouter = require('./routes/guestbook');
-// const errorRoute = require('./routes/error');
-// const galleryRouter = require('./routes/gallery')
-// const boardRouter = require('./routes/board')
-// // api-router
-// const userApiRouter = require('./routes/user-api');
-// const guestbookApiRouter = require('./routes/guestbook-api');
+    // 2. Application Routers
+    const { applicationRouter } = require('./routes');
 
-// 3. Logging
-const logger = require('./logging');
+    // 3. Logger
+    const logger = require('./logging');
 
+    // 4. Application Setup
+    const application = express()
+        // 4-1. Session Environment
+        .use(session({ 
+            secret: 'mysite-session',
+            resave: false,
+            saveUninitialized: false  
+        }))
+        // 4-2. Body Parsers
+        .use(express.json())
+        .use(express.urlencoded({extended: true}))
+        // 4-3. Multipart
+        .use(multer({dest: path.join(__dirname, process.env.MULTER_TEMPORARY_STORE)}).single('file'))
+        // 4-4. Static
+        .use(express.static(path.join(__dirname, process.env.STATIC_RESOURCES_DIRECTORY)))
+        // 4-5. Favicon
+        // .use(favicon(path.join(__dirname, process.env.STATIC_RESOURCES_DIRECTORY, 'assets', 'images', 'favicon.ico')))
+        // 4-6. View Engine Setup
+        .set('views', path.join(__dirname, 'views'))
+        .set('view engine', 'ejs');
 
-// 4. Application Setup
-const application = express()
-    // 4-1. session enviroment
-    .use(session({
-        secret: 'mysite-session', // 쿠키 변조를 방지하기 위한 값.
-        resave: false,  // req.session.authUser= user (요청처리에서 세션이 변경 사항이 없어도 항상 저장)
-        saveUninitialized: false    // 새로 세션을 생성할 때 "uninitialized" 상태로 둔다. 따라서 로그인 세션처리에서는 false로 해주면 좋다.
-    }))
+    // 5. Application Router Setup
+    applicationRouter.setup(application);
 
-    // 4-2. request body parser
-    .use(express.urlencoded({extended: true})) //application/x-www-form-urlencoded
-    .use(express.json())                       //application/json
-
-    // 4-3. multipart
-    .use(multer({
-        dest: path.join(__dirname, process.env.MULTER_TEMPORARY_STORE)
-
-    }).single('file'))
-
-    // 4-4. static serve(체인걸음)
-    .use(express.static(path.join(__dirname, process.env.STATIC_RESOURCES_DIRECTORY)))
-    
-    // 4-5. view engine setup
-    .set("views", path.join(__dirname, "views"))
-    .set('view engine', 'ejs')
-    
-// 5. Application Router Setup
-applicationRouter.setup(application);
-    // // 6. request router
-    // .all('*', function(req,res, next){ // 모든 메소드의 url 설정
-    //     res.locals.req = req;
-    //     res.locals.res = res;
-    //     next();
-    // })
-    // .use('/', mainRouter) // < - 이부분에서 계속 추가
-    // .use('/user', userRouter) 
-    // .use('/api/user', userApiRouter) 
-    
-    // .use('/guestbook', guestbookRouter)
-    // .use('/api/guestbook', guestbookApiRouter)
-
-    // .use('/gallery', galleryRouter)
-
-    // .use('/board' , boardRouter)
-
-    // .use(errorRoute.error404) //404 에러처리
-    // .use(errorRoute.error500) //500 처리
-
-// 6. server setup
-http.createServer(application)
+    // 6. Server Startup
+    http.createServer(application)
         .on('listening', function(){
             logger.info('Listening on port ' + process.env.PORT );
         })
