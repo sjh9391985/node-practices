@@ -65,20 +65,9 @@ module.exports = {
     },
     /* 방명록 글 삭제 END */
 
-    spa: async function(req,res, next){
-        try { 
-        const result = await models.Guestbook.findAll({
-            attributes: ['no', 'name', 'password', 'message', 'regDate'],
-            order: [
-                ['no', 'DESC']
-            ]
-        })
-        res.render('guestbook/spa-landing', {
-            list: result,
-            moment : moment
-        })
-        }catch(e){
-            next(e);
-        }
+    /* 방명록[SPA] */
+    spalanding: function(req, res, next){
+        res.render('guestbook/spa-landing');
     }
+    /* 방명록[SPA] END */
 }

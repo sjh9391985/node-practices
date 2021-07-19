@@ -1,4 +1,5 @@
 const models = require('../models'); //이렇게 설정하면 models 의 디렉토리의 index.js만 실행이 된다.
+const logger = require('../logging');
 
 module.exports = {
     /* 회원가입 */
@@ -105,6 +106,4 @@ module.exports = {
         }    
     }
     /* 회원정보 수정 END */
-
-
 }

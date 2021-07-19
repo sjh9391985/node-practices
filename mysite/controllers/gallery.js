@@ -49,7 +49,7 @@ module.exports = {
     /* 갤러리 사진 삭제 */
     delete: async function(req, res, next){
         try{
-            const result = await models.Gallery.destroy({
+            const results = await models.Gallery.destroy({
                 where: {
                     no: req.params.no
                 }
