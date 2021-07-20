@@ -103,7 +103,7 @@ module.exports = {
                 title: req.body.title,
                 contents: req.body.contents
             },  {
-                where: {no: req.body.authUser.no}
+                where: { no: req.params.no  }
                 }
             );
             res.redirect('/board')

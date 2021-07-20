@@ -13,7 +13,7 @@ Router.route('/write').post(controller._write);
 Router.route('/view/:no').get(controller.view);
 
 Router.route('/view/update/:no').get(authorized(), controller._update);
-Router.route('/view/update').post(authorized(),controller.update);
+Router.route('/view/update/:no').get(authorized(),controller.update);
 
 
 module.exports = Router;
