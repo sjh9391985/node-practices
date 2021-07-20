@@ -25,7 +25,7 @@ module.exports = function(sequelize){
         },
         hit: {
             filed: 'hit',
-            type: DataTypes.BIGINT(11),
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         groupNo: {
@@ -40,11 +40,6 @@ module.exports = function(sequelize){
         },       
         depth: {
             filed: 'depth',
-            type: DataTypes.BIGINT(11),
-            allowNull: false
-        },
-        userNo: {
-            filed: 'user_no',
             type: DataTypes.BIGINT(11),
             allowNull: false
         }
