@@ -21,6 +21,7 @@ const applicationRouter = {
         .use('/admin', authorized('ADMIN'), require('./admin'))
         .use('/api/user/', require('./user-api'))
         .use('/api/guestbook', require('./guestbook-api'))
+        .use('/board', require('./board'))
         
         .use(errorRouter.error404)
         .use(errorRouter.error500)

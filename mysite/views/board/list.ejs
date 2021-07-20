@@ -23,20 +23,34 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-
+					<%
+						const count = board.length;
+						board.forEach(function(board, index){
+					%>
 					<tr>
-						<td>3</td>
-						<td><a href="">세 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-10-11 12:04:20</td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
+						<td><%= count-index %></td>
+						<td><a href= "/board/view/<%=board.no %>" ><%= board.title %></a></td>
+						<td>이름</td>
+						<td><%= board.hit %></td>
+						<td><%=moment(board.regDate).format('YYYY-MM-DD hh:mm:ss') %></td>
+						
+						<% if(req.session.authUser){ %>
+						<td>
+							<a href="/board/delete/<%=board.no%>" class="del" style='background-image:url("/assets/images/recycle.png")'>삭제</a>
+						</td>
+						<% } %>
+						</tr>
+
+					<%
+						})
+					%>
 					
 				</table>
+				<% if(req.session.authUser){ %>
 				<div class="bottom">
-					<a href="" id="new-book">글쓰기</a>
-				</div>				
+					<a href="/board/writeform" id="new-book">글쓰기</a>
+				</div>	
+				<% } %>			
 			</div>
 		</div>
 		<%-include("../includes/navigation") %>

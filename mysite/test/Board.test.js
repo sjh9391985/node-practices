@@ -60,7 +60,20 @@ describe('Model Board', function(){
         board.no.should.not.equals(undefined);
     });
 
-    After(async function(){
+    it("Fetch Boards bu user(test)", async function(){
+        const results = await models.Board.findAll({
+            where: { 
+                userNo: user.no
+            },
+            include: {
+                model: models.User,
+                required: true
+            }
+        });
+        results.should.have.lengthOf(3);
+    });
+    
+    after(async function(){
         await models.Board.destroy({
             where:{
                 userNo: user.no
@@ -72,4 +85,4 @@ describe('Model Board', function(){
             }
         })
     });
-})
+}) 

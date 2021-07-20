@@ -31,17 +31,17 @@ module.exports = function(sequelize){
         groupNo: {
             filed: 'group_no',
             type: DataTypes.BIGINT(11),
-            allowNull: false
+            allowNull: true
         },
         orderNo: {
             filed: 'order_no',
             type: DataTypes.BIGINT(11),
-            allowNull: false
+            allowNull: true
         },       
         depth: {
             filed: 'depth',
             type: DataTypes.BIGINT(11),
-            allowNull: false
+            allowNull: true
         }
     },{
         underscored: true,
